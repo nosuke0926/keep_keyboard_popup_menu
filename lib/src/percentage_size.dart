@@ -28,8 +28,7 @@ class PercentageSize extends SingleChildRenderObjectWidget {
 
   /// Only update sizePercentage after first created
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderPercentageSize renderObject) {
+  void updateRenderObject(BuildContext context, _RenderPercentageSize renderObject) {
     renderObject.sizePercentage = sizePercentage;
   }
 }
@@ -66,12 +65,6 @@ class _RenderPercentageSize extends RenderAligningShiftedBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final Rect rect = Offset.zero & size;
-    _clipRectLayer = context.pushClipRect(
-      needsCompositing,
-      offset,
-      rect,
-      super.paint,
-      clipBehavior: _clipBehavior
-    );
+    context.pushClipRect(needsCompositing, offset, rect, super.paint, clipBehavior: _clipBehavior);
   }
 }
