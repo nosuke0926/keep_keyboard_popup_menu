@@ -90,12 +90,15 @@ class WithKeepKeyboardPopupMenu extends StatefulWidget {
   /// [_defaultBackgroundBuilder]
   final PopupMenuBackgroundBuilder backgroundBuilder;
 
+  final Color barrierColor;
+
   WithKeepKeyboardPopupMenu({
     required this.childBuilder,
     this.menuBuilder,
     this.menuItemBuilder,
     this.calculatePopupPosition = _defaultCalculatePopupPosition,
     this.backgroundBuilder = _defaultBackgroundBuilder,
+    this.barrierColor = Colors.black12,
     Key? key,
   })  : assert((menuBuilder == null) != (menuItemBuilder == null),
             'You can only pass one of [menuBuilder] and [menuItemBuilder].'),
@@ -212,6 +215,9 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
             Positioned.fill(
               child: GestureDetector(
                 onTap: closePopupMenu,
+                child: Container(
+                  color: widget.barrierColor,
+                ),
               ),
             ),
             CustomSingleChildLayout(
