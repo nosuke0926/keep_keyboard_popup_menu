@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_keyboard_popup_menu/keep_keyboard_popup_menu.dart';
 
@@ -93,28 +94,171 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   WithKeepKeyboardPopupMenu(
+                    backgroundBuilder: (context, child) => Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 48,
+                      ),
+                      child: Material(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              12,
+                            ),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(
+                                  0xFF000000,
+                                ).withOpacity(
+                                  0.08,
+                                ),
+                                blurRadius: 16,
+                                offset: const Offset(
+                                  0,
+                                  2,
+                                ), // changes position of shadow
+                              )
+                            ],
+                          ),
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                ),
+                                child: Text(
+                                  'タグ',
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.bodySmall!.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    maxHeight: 225,
+                                  ),
+                                  child: child,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     menuItemBuilder: (context, closePopup) => [
                       KeepKeyboardPopupMenuItem(
-                        child: Text('awa'),
                         onTap: closePopup,
+                        child: CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          child: Row(
+                            children: const [
+                              Icon(Icons.apple),
+                              Text('Apple'),
+                            ],
+                          ),
+                        ),
                       ),
+                      // KeepKeyboardPopupMenuItem(
+                      //   onTap: closePopup,
+                      //   child: CupertinoButton(
+                      //     padding:
+                      //         EdgeInsets.zero,
+                      //     onPressed: () {},
+                      //     child: Row(
+                      //       children: const [
+                      //         Icon(Icons.apple),
+                      //         Gap(16),
+                      //         Text('Apple'),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // KeepKeyboardPopupMenuItem(
+                      //   onTap: closePopup,
+                      //   child: CupertinoButton(
+                      //     padding:
+                      //         EdgeInsets.zero,
+                      //     onPressed: () {},
+                      //     child: Row(
+                      //       children: const [
+                      //         Icon(Icons.apple),
+                      //         Gap(16),
+                      //         Text('Apple'),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // KeepKeyboardPopupMenuItem(
+                      //   onTap: closePopup,
+                      //   child: CupertinoButton(
+                      //     padding:
+                      //         EdgeInsets.zero,
+                      //     onPressed: () {},
+                      //     child: Row(
+                      //       children: const [
+                      //         Icon(Icons.apple),
+                      //         Gap(16),
+                      //         Text('Apple'),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       KeepKeyboardPopupMenuItem(
-                        child: Text('awa'),
                         onTap: closePopup,
-                      ),
-                      KeepKeyboardPopupMenuItem(
-                        child: Text('awa'),
-                        onTap: closePopup,
+                        child: CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          child: Row(
+                            children: const [
+                              Icon(Icons.apple),
+                              Text('Apple'),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
-                    childBuilder: (context, openPopup) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: openPopup,
-                        child: Text('Custom Trigger'),
+                    childBuilder: (context, openPopup) => CupertinoButton(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                      ),
+                      onPressed: openPopup,
+                      child: const Icon(
+                        Icons.tag,
                       ),
                     ),
                   ),
+                  // WithKeepKeyboardPopupMenu(
+                  //   menuItemBuilder: (context, closePopup) => [
+                  //     KeepKeyboardPopupMenuItem(
+                  //       child: Text('awa'),
+                  //       onTap: closePopup,
+                  //     ),
+                  //     KeepKeyboardPopupMenuItem(
+                  //       child: Text('awa'),
+                  //       onTap: closePopup,
+                  //     ),
+                  //     KeepKeyboardPopupMenuItem(
+                  //       child: Text('awa'),
+                  //       onTap: closePopup,
+                  //     ),
+                  //   ],
+                  //   childBuilder: (context, openPopup) => Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: ElevatedButton(
+                  //       onPressed: openPopup,
+                  //       child: Text('Custom Trigger'),
+                  //     ),
+                  //   ),
+                  // ),
                   WithKeepKeyboardPopupMenu(
                     menuItemBuilder: (context, closePopup) => [
                       KeepKeyboardPopupMenuItem(

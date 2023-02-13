@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'percentage_size.dart';
-
 /// Used to build the background of the popup menu. [child] is the content of
 /// the popup menu.
 typedef Widget PopupMenuBackgroundBuilder(
@@ -29,65 +27,46 @@ class AnimatedPopupMenu extends StatefulWidget {
 class AnimatedPopupMenuState extends State<AnimatedPopupMenu>
     with TickerProviderStateMixin {
   static const ENTER_DURATION = Duration(milliseconds: 220);
-  static final CurveTween enterOpacityTween = CurveTween(
-    curve: Interval(0.0, 90 / 220, curve: Curves.linear),
-  );
-  static final CurveTween enterSizeTween = CurveTween(
-    curve: Curves.easeOutCubic,
-  );
+  late Tween<double> _colorTween;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
 
   static const EXIT_DURATION = Duration(milliseconds: 260);
-  static final CurveTween exitOpacityTween = CurveTween(
-    curve: Curves.linear,
-  );
-
-  late final AnimationController _enterAnimationController;
-  late final Animation<double> _enterAnimation;
-  late final AnimationController _exitAnimationController;
-  late final Animation<double> _exitAnimation;
 
   @override
   void initState() {
-    _enterAnimationController = AnimationController(
+    super.initState();
+
+    _colorTween = Tween(begin: 0, end: 1);
+    _animationController = AnimationController(
       vsync: this,
-      duration: ENTER_DURATION,
+      duration: const Duration(milliseconds: 150),
     );
-    _enterAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(_enterAnimationController);
-    _enterAnimationController.forward().then((value) {
+    _animation = _colorTween.animate(_animationController);
+
+    _animationController.forward().then((value) {
       if (widget.onFullyOpened != null) widget.onFullyOpened!();
     });
-
-    _exitAnimationController = AnimationController(
-      vsync: this,
-      duration: EXIT_DURATION,
-    );
-    _exitAnimation =
-        Tween(begin: 1.0, end: 0.0).animate(_exitAnimationController);
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _exitAnimation,
+      animation: _animation,
       builder: (BuildContext context, child) {
         return Opacity(
-          opacity: exitOpacityTween.evaluate(_exitAnimation),
+          opacity: _colorTween.evaluate(_animation),
           child: child!,
         );
       },
       child: AnimatedBuilder(
-        animation: _enterAnimation,
+        animation: _animation,
         builder: (BuildContext context, _) {
           return Opacity(
-            opacity: enterOpacityTween.evaluate(_enterAnimation),
+            opacity: _colorTween.evaluate(_animation),
             child: widget.backgroundBuilder(
               context,
-              PercentageSize(
-                sizePercentage: enterSizeTween.evaluate(_enterAnimation),
-                child: widget.child,
-              ),
+              widget.child,
             ),
           );
         },
@@ -96,19 +75,18 @@ class AnimatedPopupMenuState extends State<AnimatedPopupMenu>
   }
 
   Future<void> showMenu() async {
-    _enterAnimationController.stop();
-    await _exitAnimationController.forward();
+    _animationController.stop();
+    await _animationController.forward();
   }
 
   Future<void> hideMenu() async {
-    _enterAnimationController.stop();
-    await _exitAnimationController.forward();
+    _animationController.stop();
+    await _animationController.reverse();
   }
 
   @override
   void dispose() {
-    _enterAnimationController.dispose();
-    _exitAnimationController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 }
