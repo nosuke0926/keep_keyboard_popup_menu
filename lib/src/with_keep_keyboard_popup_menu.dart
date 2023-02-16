@@ -92,8 +92,6 @@ class WithKeepKeyboardPopupMenu extends StatefulWidget {
 
   final Color barrierColor;
 
-  final bool isAlwaysShownScrollBar;
-
   WithKeepKeyboardPopupMenu({
     required this.childBuilder,
     this.menuBuilder,
@@ -101,7 +99,6 @@ class WithKeepKeyboardPopupMenu extends StatefulWidget {
     this.calculatePopupPosition = _defaultCalculatePopupPosition,
     this.backgroundBuilder = _defaultBackgroundBuilder,
     this.barrierColor = Colors.black12,
-    this.isAlwaysShownScrollBar = false,
     Key? key,
   })  : assert((menuBuilder == null) != (menuItemBuilder == null),
             'You can only pass one of [menuBuilder] and [menuItemBuilder].'),
@@ -113,7 +110,6 @@ class WithKeepKeyboardPopupMenu extends StatefulWidget {
 }
 
 class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
-  late final ScrollController _scrollController;
   final GlobalKey _childKey = GlobalKey();
   GlobalKey<AnimatedPopupMenuState> _menuKey = GlobalKey();
   OverlayEntry? _entry;
@@ -123,7 +119,6 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
     _keyboardVisibilitySub = KeyboardVisibilityController()
         .onChange
         .distinct()
@@ -135,7 +130,6 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
   @override
   void dispose() {
     _keyboardVisibilitySub.cancel();
-    _scrollController.dispose();
     closePopupMenu();
     super.dispose();
   }
@@ -243,16 +237,9 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
                     minWidth: _kMenuMinWidth,
                     maxWidth: _kMenuMaxWidth,
                   ),
-                  child: Scrollbar(
-                    thumbVisibility: widget.isAlwaysShownScrollBar,
-                    controller: _scrollController,
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      child: IntrinsicWidth(
-                        stepWidth: _kMenuWidthStep,
-                        child: _buildPopupBody(),
-                      ),
-                    ),
+                  child: IntrinsicWidth(
+                    stepWidth: _kMenuWidthStep,
+                    child: _buildPopupBody(),
                   ),
                 ),
               ),
